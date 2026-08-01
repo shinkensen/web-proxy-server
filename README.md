@@ -27,7 +27,7 @@ A modern, fast, and secure web proxy server with a beautiful frontend UI. Built 
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/YOUR_USERNAME/web-proxy-server.git
+git clone https://github.com/shinkensen/web-proxy-server.git
 cd web-proxy-server
 ```
 
@@ -77,7 +77,7 @@ sudo npm install -g pm2
 
 3. **Clone and setup the project**
 ```bash
-git clone https://github.com/YOUR_USERNAME/web-proxy-server.git
+git clone https://github.com/shinkensen/web-proxy-server.git
 cd web-proxy-server
 npm install
 ```
