@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free web proxy service - Browse anonymously and securely">
+    <title>Web Proxy - Browse Anonymously</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="8" fill="url(#gradient)"/>
+                    <path d="M16 8L24 12V20L16 24L8 20V12L16 8Z" fill="white" opacity="0.9"/>
+                    <defs>
+                        <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
+                            <stop offset="0%" stop-color="#667eea"/>
+                            <stop offset="100%" stop-color="#764ba2"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="logo-text">WebProxy</span>
+            </div>
+            <nav class="nav">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#about" class="nav-link">About</a>
+            </nav>
+        </header>
+
+        <main class="main">
+            <section class="hero">
+                <h1 class="hero-title">Browse the Web Anonymously</h1>
+                <p class="hero-subtitle">Free web proxy service. Access any website securely and privately.</p>
+                
+                <div class="proxy-form">
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M19 19l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <input 
+                            type="text" 
+                            id="urlInput" 
+                            class="url-input" 
+                            placeholder="Enter website URL (e.g., https://example.com)"
+                            autocomplete="off"
+                        >
+                    </div>
+                    <button id="goButton" class="go-button">
+                        <span>Go</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="quick-links">
+                    <span class="quick-links-label">Quick access:</span>
+                    <button class="quick-link" data-url="https://www.google.com">Google</button>
+                    <button class="quick-link" data-url="https://www.youtube.com">YouTube</button>
+                    <button class="quick-link" data-url="https://www.wikipedia.org">Wikipedia</button>
+                    <button class="quick-link" data-url="https://www.reddit.com">Reddit</button>
+                </div>
+
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+                <div id="loadingMessage" class="loading-message" style="display: none;">
+                    <div class="spinner"></div>
+                    <span>Loading...</span>
+                </div>
+            </section>
+
+            <div id="proxyFrame" class="proxy-frame-container" style="display: none;">
+                <div class="proxy-controls">
+                    <button id="backButton" class="control-btn" title="Back">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M12 4l-8 6 8 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button id="refreshButton" class="control-btn" title="Refresh">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0z" stroke="currentColor" stroke-width="2"/>
+                            <path d="M10 6v4l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                    <div class="current-url-display">
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 2v3m0 10v3m8-8h-3M5 10H2m15.07-6.07l-2.12 2.12M7.05 14.95L4.93 17.07M17.07 17.07l-2.12-2.12M7.05 7.05L4.93 4.93" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span id="currentUrl"></span>
+                    </div>
+                    <button id="closeButton" class="control-btn close-btn" title="Close">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <iframe id="proxyIframe" class="proxy-iframe" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"></iframe>
+            </div>
+
+            <section id="features" class="features">
+                <h2 class="section-title">Why Use Our Proxy?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="white" stroke-width="2"/>
+                                <path d="M12 6V12L16 14" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Fast & Reliable</h3>
+                        <p class="feature-desc">High-speed proxy servers ensuring smooth browsing experience</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="white" stroke-width="2"/>
+                                <path d="M2 12C2 12 5 5 12 5C19 5 22 12 22 12C22 12 19 19 12 19C5 19 2 12 2 12Z" stroke="white" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Anonymous</h3>
+                        <p class="feature-desc">Browse anonymously, your IP address stays hidden</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="11" width="18" height="11" rx="2" stroke="white" stroke-width="2"/>
+                                <path d="M7 11V7C7 4.79086 8.79086 3 11 3H13C15.2091 3 17 4.79086 17 7V11" stroke="white" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Secure</h3>
+                        <p class="feature-desc">SSL encryption protects your data and privacy</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">No Logs</h3>
+                        <p class="feature-desc">We don't track or store your browsing activity</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about" class="about">
+                <h2 class="section-title">About Our Service</h2>
+                <p class="about-text">
+                    Our free web proxy service allows you to browse the internet anonymously and securely. 
+                    Whether you need to access blocked websites, protect your privacy, or simply browse without 
+                    revealing your IP address, our proxy service has you covered. No registration required, 
+                    completely free, and easy to use.
+                </p>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2026 WebProxy. All rights reserved. | Connected to: <strong>proxy.dev7.xyz</strong></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
