@@ -28,9 +28,15 @@ function isValidUrl(string) {
 function normalizeUrl(url) {
     url = url.trim();
     
-    // Add protocol if missing
+    // If no protocol and not a valid URL pattern, redirect to Google search
     if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        url = 'https://' + url;
+        // Check if it looks like a domain (has a dot and no spaces)
+        if (url.includes('.') && !url.includes(' ')) {
+            url = 'https://' + url;
+        } else {
+            // Treat as Google search query
+            url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
+        }
     }
     
     return url;
@@ -77,8 +83,14 @@ function loadProxyUrl(url) {
         // Show proxy frame
         proxyFrame.style.display = 'block';
         
-        // Scroll to iframe
-        proxyFrame.scrollIntoView({ behavior: 'smooth' });
+        // Make fullscreen after a short delay
+        setTimeout(() => {
+            document.querySelector('.hero').style.display = 'none';
+            document.querySelector('.features').style.display = 'none';
+            document.querySelector('.about').style.display = 'none';
+            proxyFrame.style.height = 'calc(100vh - 100px)';
+            proxyFrame.querySelector('.proxy-iframe').style.height = 'calc(100vh - 160px)';
+        }, 100);
         
         // Hide loading after delay
         setTimeout(() => showLoading(false), 1000);
@@ -125,6 +137,13 @@ closeButton.addEventListener('click', () => {
     currentUrl = '';
     history = [];
     urlInput.value = '';
+    
+    // Restore original layout
+    document.querySelector('.hero').style.display = 'block';
+    document.querySelector('.features').style.display = 'block';
+    document.querySelector('.about').style.display = 'block';
+    proxyFrame.style.height = '';
+    proxyFrame.querySelector('.proxy-iframe').style.height = '600px';
 });
 
 // Quick links

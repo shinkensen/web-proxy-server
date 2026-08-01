@@ -122,12 +122,13 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start server
-app.listen(PORT, () => {
+// Start server - bind to 0.0.0.0 to accept external connections
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Proxy server running on port ${PORT}`);
   console.log(`🌐 Domain: ${DOMAIN}`);
   console.log(`📡 Proxy endpoint: http://localhost:${PORT}/proxy`);
   console.log(`💻 Frontend: http://localhost:${PORT}`);
+  console.log(`🌍 Accessible at: http://${DOMAIN}:${PORT}`);
 });
 
 // Graceful shutdown
