@@ -69,10 +69,13 @@ function loadProxyUrl(url) {
     
     try {
         currentUrl = url;
-        history.push(url);
+        if (history.length === 0 || history[history.length - 1] !== url) {
+            history.push(url);
+        }
         
-        // Update display
+        // Update display and make it editable
         currentUrlDisplay.textContent = url;
+        urlInput.value = url;
         
         // Construct proxy URL
         const proxyUrl = `/proxy?url=${encodeURIComponent(url)}`;
@@ -83,14 +86,12 @@ function loadProxyUrl(url) {
         // Show proxy frame
         proxyFrame.style.display = 'block';
         
-        // Make fullscreen after a short delay
-        setTimeout(() => {
-            document.querySelector('.hero').style.display = 'none';
-            document.querySelector('.features').style.display = 'none';
-            document.querySelector('.about').style.display = 'none';
-            proxyFrame.style.height = 'calc(100vh - 100px)';
-            proxyFrame.querySelector('.proxy-iframe').style.height = 'calc(100vh - 160px)';
-        }, 100);
+        // Make fullscreen immediately
+        document.querySelector('.hero').style.display = 'none';
+        document.querySelector('.features').style.display = 'none';
+        document.querySelector('.about').style.display = 'none';
+        proxyFrame.style.height = 'calc(100vh - 80px)';
+        proxyFrame.querySelector('.proxy-iframe').style.height = 'calc(100vh - 140px)';
         
         // Hide loading after delay
         setTimeout(() => showLoading(false), 1000);
@@ -121,7 +122,10 @@ backButton.addEventListener('click', () => {
     if (history.length > 1) {
         history.pop(); // Remove current
         const previousUrl = history[history.length - 1];
-        loadProxyUrl(previousUrl);
+        currentUrl = previousUrl;
+        currentUrlDisplay.textContent = previousUrl;
+        urlInput.value = previousUrl;
+        proxyIframe.src = `/proxy?url=${encodeURIComponent(previousUrl)}`;
     }
 });
 
